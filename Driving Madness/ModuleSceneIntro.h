@@ -27,13 +27,12 @@ public:
 	void AddPrimitive(Primitive* p);																//Adds a primitive to the primitives dynArray.
 	void DeletePrimitive(Primitive* p);																//Deletes a primitive from the primitives dynArray.
 
-	void LoadArena();																				//Loads all Arena elements. Done for readability.
+	void LoadCircuit();																				
 	void SetCube(const vec3& position, const vec3& size, float mass, float angle, const vec3& axis, bool is_sensor = false, bool is_environment = false);				//Creates and sets a cube on the world. Used to set Arena elements.
 	void SetSphere(const vec3& position, float radius, float mass, bool is_sensor = false, bool is_environment = false);												//Creates and sets a sphere on the world. Used to set Arena elements.
 	void SetCylinder(const vec3& position, float radius, float height, float mass, float angle, const vec3& axis, bool is_sensor = false, bool is_environment = false);	//Creates and sets a sphere on the world. Used to set Arena elements.
 
-	void CheckWins();
-	void RestartGame();																				//Resets everyithing except Arena elements.
+	void RestartGame();																				
 
 	//Constrains
 	Cube* onetwo;

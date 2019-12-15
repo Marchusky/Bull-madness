@@ -25,7 +25,8 @@ bool ModuleSceneIntro::Start()
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
 
-	LoadArena();
+	LoadCircuit();
+
 	timer = 0;
 	return ret;
 }
@@ -42,7 +43,7 @@ bool ModuleSceneIntro::CleanUp()
 
 	
 	primitives.Clear();
-	LoadArena();
+	LoadCircuit();
 
 	return true;
 }
@@ -145,9 +146,6 @@ update_status ModuleSceneIntro::Update(float dt)
 	for (uint n = 0; n < primitives.Count(); n++)
 		primitives[n]->Update();
 
-	//Checking Victory Conditions
-	CheckWins();
-	
 	//Applying torque to the arena's constraints.
 	onetwo->body.GetBody()->applyTorque(btVector3(0.0f, 30000.0f, 0.0f));
 	twotwo->body.GetBody()->applyTorque(btVector3(0.0f, 30000.0f, 0.0f));
@@ -168,15 +166,13 @@ update_status ModuleSceneIntro::PostUpdate(float dt)
 	{
 		primitives[n]->Render();
 	}
-
-	/*for (uint n = 0; n < arena_elements.Count(); n++)
-	{
-		arena_elements[n]->Render();
-	}*/
-
-	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
 	{
 		RestartGame();
+	}
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+	{
+		App->player->RestartPlayer(vec3(88, 6, 88));
 	}
 
 	return UPDATE_CONTINUE;
@@ -221,12 +217,14 @@ void ModuleSceneIntro::DeletePrimitive(Primitive* p)
 	}
 }
 
-void ModuleSceneIntro::LoadArena()
+void ModuleSceneIntro::LoadCircuit()
 {
-	// ---------------------------------- GROUND -----------------------------------
-	//SetCylinder(vec3(0.0f, -1.0f, 0.0f), 80.f, 2.1f, 0.0f, 90, vec3(0, 0, 1), false, true);
-	SetCube(vec3(88.0f, -2.0f, 88.0f), vec3(200.f, 5.f, 200.f), 0.0f, 0, vec3(1, 0, 0), false, true);		//North Center Wall.
-
+	// Ground
+	/*SetCube(vec3(88.0f, -2.0f, 88.0f), vec3(200.f, 5.f, 200.f), 0.0f, 0, vec3(1, 0, 0), false, true);*/
+	Cube* Ground = new Cube(vec3(200.f, 5.f, 200.f), 0.0f, false, true);
+	Ground->SetPos(88.0f, -2.0f, 88.0f);
+	primitives.PushBack(Ground);
+	Ground->color = Yellow;
 
 	// Circuit
 	// 1
@@ -283,6 +281,7 @@ void ModuleSceneIntro::LoadArena()
 
 
 	// Obstacles
+	// 1
 	Cube* oneone = new Cube(vec3(1.0f, 1.0f, 1.0f), 0.0f, false, true);
 	oneone->SetPos(80.0f, 5.0f, 20.0f);
 	primitives.PushBack(oneone);
@@ -293,7 +292,7 @@ void ModuleSceneIntro::LoadArena()
 	onetwo->color = Blue;
 
 	App->physics->AddConstraintHinge(*oneone, *onetwo, vec3(0.0f, 0.0f, 0.0f), vec3(-3.0f, 0.0f, 0.0f), vec3(0, 1, 0), vec3(0, 1, 0), true);
-	//2
+	// 2
 	Cube* twoone = new Cube(vec3(1.0f, 1.0f, 1.0f), 0.0f, false, true);
 	twoone->SetPos(60.0f, 5.0f, 60.0f);
 	primitives.PushBack(twoone);
@@ -384,11 +383,6 @@ void ModuleSceneIntro::SetCylinder(const vec3& position, float radius, float hei
 	furniture->color = color;															//Sets the element's colour.
 }
 
-void ModuleSceneIntro::CheckWins()
-{
-	
-}
-
 void ModuleSceneIntro::RestartGame()
 {
 	if (App->player->Points > App->player->HighScore)
@@ -397,8 +391,4 @@ void ModuleSceneIntro::RestartGame()
 	}
 	App->player->RestartPlayer(vec3(88, 6, 88));
 	App->player->Points = 0;
-
-	
-
-	CleanUp();
 }

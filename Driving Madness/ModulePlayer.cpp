@@ -17,7 +17,7 @@ ModulePlayer::~ModulePlayer()
 bool ModulePlayer::Start()
 {
 	LOG("Loading player");
-	Points = 0;
+	Points = -1;
 	HighScore = 0;
 	VehicleInfo car;
 
