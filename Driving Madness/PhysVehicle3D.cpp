@@ -48,8 +48,40 @@ void PhysVehicle3D::Render()
 	chassis.transform.M[13] += offset.getY();
 	chassis.transform.M[14] += offset.getZ();
 
-
 	chassis.Render();
+	
+	Cube front(vec3(1, info.chassis_size.y, 2));
+	vehicle->getChassisWorldTransform().getOpenGLMatrix(&front.transform);
+	btVector3 front_offset(info.chassis_offset.x, info.chassis_offset.y + 0.3, info.chassis_offset.z +1.6);
+	front_offset = front_offset.rotate(q.getAxis(), q.getAngle());
+	
+	front.transform.M[12] += front_offset.getX();
+	front.transform.M[13] += front_offset.getY();
+	front.transform.M[14] += front_offset.getZ();
+
+	front.Render();
+
+	Cube horn(vec3(1, 0.4, 0.3));
+	vehicle->getChassisWorldTransform().getOpenGLMatrix(&horn.transform);
+	btVector3 horn_offset(info.chassis_offset.x + 0.8, info.chassis_offset.y + 0.7, info.chassis_offset.z + 1.8);
+	horn_offset = horn_offset.rotate(q.getAxis(), q.getAngle());
+
+	horn.transform.M[12] += horn_offset.getX();
+	horn.transform.M[13] += horn_offset.getY();
+	horn.transform.M[14] += horn_offset.getZ();
+
+	horn.Render();
+
+	Cube horn1(vec3(1, 0.4, 0.3));
+	vehicle->getChassisWorldTransform().getOpenGLMatrix(&horn1.transform);
+	btVector3 horn1_offset(info.chassis_offset.x - 0.8, info.chassis_offset.y + 0.7, info.chassis_offset.z + 1.8);
+	horn1_offset = horn1_offset.rotate(q.getAxis(), q.getAngle());
+
+	horn1.transform.M[12] += horn1_offset.getX();
+	horn1.transform.M[13] += horn1_offset.getY();
+	horn1.transform.M[14] += horn1_offset.getZ();
+
+	horn1.Render();
 }
 
 // ----------------------------------------------------------------------------

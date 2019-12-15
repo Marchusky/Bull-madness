@@ -1,4 +1,4 @@
-# Driving-madness
+# Bull-madness
 Racing game made with bullet3D for the Physics II class in UPC-CITM
 
 
@@ -22,17 +22,19 @@ Racing game made with bullet3D for the Physics II class in UPC-CITM
 ### Reset Game
 - F3
 
+### Camera Movement
+- Mouse right button
 
 
 # Goal of the Game
-The player has to pass through the maximum number of columns in 30sec.
+The player has to pass through the maximum number of columns in 60sec.
 Let's see who keeps the highscore.
 
 
 
 # Game Mechanics
-The car passes through the columns to win points, there's a time limit
-of 30sec so be carefull and use the turbo to get as many columns as possible.
+The bull passes through the columns to win points, there's a time limit
+of 60sec so be carefull and use the turbo to get as many columns as possible.
 
 
 

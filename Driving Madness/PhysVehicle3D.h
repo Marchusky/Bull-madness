@@ -53,6 +53,7 @@ public:
 	float GetKmh() const;
 public:
 
+	bool doOnce = true;
 	Cube chassis;
 	VehicleInfo info;
 	btRaycastVehicle* vehicle;
