@@ -4,6 +4,8 @@
 #include "Primitive.h"
 #include "PhysBody3D.h"
 #include "ModulePhysics3D.h" 
+#include "ModulePlayer.h"
+#include "PhysVehicle3D.h"
 
 ModuleSceneIntro::ModuleSceneIntro(bool start_enabled) : Module(start_enabled)
 {
@@ -21,69 +23,69 @@ bool ModuleSceneIntro::Start()
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
 
-	const int SnakeLength = 3;
-	const float StartingSize = 0.5f;
-	const float SizeIncrement = 0.2f;
-	const float BallDistance = 0.3f;
+	//const int SnakeLength = 3;
+	//const float StartingSize = 0.5f;
+	//const float SizeIncrement = 0.2f;
+	//const float BallDistance = 0.3f;
 
-	float XPos = 0.f;
-	float Size = StartingSize;
-	Sphere* tempSphere = nullptr;
-	float tempSize = NULL;
-	for (int n = 0; n < SnakeLength; n++)
-	{
-		Sphere* s = new Sphere(Size);
-		primitives.PushBack(s);
-		s->SetPos(XPos, 10.f, 2.5f);
+	//float XPos = 0.f;
+	//float Size = StartingSize;
+	//Sphere* tempSphere = nullptr;
+	//float tempSize = NULL;
+	//for (int n = 0; n < SnakeLength; n++)
+	//{
+	//	Sphere* s = new Sphere(Size);
+	//	primitives.PushBack(s);
+	//	s->SetPos(XPos, 10.f, 2.5f);
 
-		//TODO 2: Link all the spheres with your P2P constraints
-		if (primitives.Count() > 1 && tempSphere != nullptr)
-		{
-			btVector3 midPointA = btVector3(((tempSize + tempSize + BallDistance) / 2), 0.f, 0.f);
-			btVector3 midPointB = btVector3(((Size + Size + BallDistance) / -2), 0.f, 0.f);
-			App->physics->AddConstraintP2P(*tempSphere, *s, midPointA, midPointB);
-		}
+	//	//TODO 2: Link all the spheres with your P2P constraints
+	//	if (primitives.Count() > 1 && tempSphere != nullptr)
+	//	{
+	//		btVector3 midPointA = btVector3(((tempSize + tempSize + BallDistance) / 2), 0.f, 0.f);
+	//		btVector3 midPointB = btVector3(((Size + Size + BallDistance) / -2), 0.f, 0.f);
+	//		App->physics->AddConstraintP2P(*tempSphere, *s, midPointA, midPointB);
+	//	}
 
-		tempSphere = s;
-		tempSize = Size;
-		XPos += Size + Size + SizeIncrement + BallDistance;
-		Size += SizeIncrement;
-	}
+	//	tempSphere = s;
+	//	tempSize = Size;
+	//	XPos += Size + Size + SizeIncrement + BallDistance;
+	//	Size += SizeIncrement;
+	//}
 
 
-	const int SnakeLength2 = 3;
-	const float StartingSize2 = 0.5f;
-	const float SizeIncrement2 = 0.2f;
-	const float BallDistance2 = 0.3f;
+	//const int SnakeLength2 = 3;
+	//const float StartingSize2 = 0.5f;
+	//const float SizeIncrement2 = 0.2f;
+	//const float BallDistance2 = 0.3f;
 
-	float XPos2 = 0.f;
-	float Size2 = StartingSize2;
-	Sphere* tempSphere2 = nullptr;
-	float tempSize2 = NULL;
+	//float XPos2 = 0.f;
+	//float Size2 = StartingSize2;
+	//Sphere* tempSphere2 = nullptr;
+	//float tempSize2 = NULL;
 
-	//TODO 4: Link some other spheres with your Hinge constraint
-	for (int n = 0; n < SnakeLength2; n++)
-	{
-		Sphere* s2 = new Sphere(Size2);
-		primitives.PushBack(s2);
-		s2->SetPos(XPos2, 10.f, 10.0f);
+	////TODO 4: Link some other spheres with your Hinge constraint
+	//for (int n = 0; n < SnakeLength2; n++)
+	//{
+	//	Sphere* s2 = new Sphere(Size2);
+	//	primitives.PushBack(s2);
+	//	s2->SetPos(XPos2, 10.f, 10.0f);
 
-		if (primitives.Count() > 1 && tempSphere2 != nullptr)
-		{
-			btVector3 midPointA2 = btVector3(0, 0.f, 0.f);
-			btVector3 axisA2 = btVector3(0.0f, 1.0f, 0.f);
-			btVector3 midPointB2 = btVector3(-((Size2 + Size2 + BallDistance2)), 0.f, 0.f);
-			btVector3 axisB2 = btVector3(0, 1.0f, 0.f);
+	//	if (primitives.Count() > 1 && tempSphere2 != nullptr)
+	//	{
+	//		btVector3 midPointA2 = btVector3(0, 0.f, 0.f);
+	//		btVector3 axisA2 = btVector3(0.0f, 1.0f, 0.f);
+	//		btVector3 midPointB2 = btVector3(-((Size2 + Size2 + BallDistance2)), 0.f, 0.f);
+	//		btVector3 axisB2 = btVector3(0, 1.0f, 0.f);
 
-			App->physics->AddConstraintHinge(*tempSphere2, *s2, midPointA2, midPointB2, axisA2, axisB2);
-		//	App->physics->AddConstraintP2P(*tempSphere2, *s2, midPointA2, midPointB2);
-		}
+	//		App->physics->AddConstraintHinge(*tempSphere2, *s2, midPointA2, midPointB2, axisA2, axisB2);
+	//	//	App->physics->AddConstraintP2P(*tempSphere2, *s2, midPointA2, midPointB2);
+	//	}
 
-		tempSphere2 = s2;
-		tempSize = Size2;
-		XPos2 += Size2 + Size2 + SizeIncrement2 + BallDistance2;
-		Size2 += SizeIncrement2;
-	}
+	//	tempSphere2 = s2;
+	//	tempSize = Size2;
+	//	XPos2 += Size2 + Size2 + SizeIncrement2 + BallDistance2;
+	//	Size2 += SizeIncrement2;
+	//}
 	return ret;
 }
 
@@ -153,8 +155,76 @@ update_status ModuleSceneIntro::Update(float dt)
 
 	for (uint n = 0; n < primitives.Count(); n++)
 		primitives[n]->Update();
+	
+	//IMPORTANTE
+	//Camera Management
 
-	return UPDATE_CONTINUE;
+	//LOOK AT------------------------------------------------------------------
+	float chassis_X = App->player->vehicle->chassis.transform.M[12]; //coordenada X del vehículo
+	float chassis_Y = App->player->vehicle->chassis.transform.M[13]; //coordenada Y "
+	float chassis_Z = App->player->vehicle->chassis.transform.M[14]; //coordenada Z "
+
+	App->camera->LookAt(vec3(chassis_X, chassis_Y, chassis_Z));
+
+	//DISTANCE BETWEEN CAMERA AND CAR-------------------------------------------
+	float distance_X = chassis_X - App->camera->Position.x;
+	float distance_Y = chassis_Y - App->camera->Position.y;
+	float distance_Z = chassis_Z - App->camera->Position.z;
+
+	float absoluteDistance_X = 0;
+	float absoluteDistance_Y = 0;
+	float absoluteDistance_Z = 0;
+
+	if ((distance_X) >= 0)
+		absoluteDistance_X = (distance_X);
+	else
+		absoluteDistance_X = (distance_X)*(-1);
+
+	if ((distance_Y) >= 0)
+		absoluteDistance_Y = (distance_Y);
+	else
+		absoluteDistance_Y = (distance_Y)*(-1);
+
+	if ((distance_Z) >= 0)
+		absoluteDistance_Z = (distance_Z);
+	else
+		absoluteDistance_Z = (distance_Z)*(-1);
+
+	//CAMERA POSITION------------------------------------------------------------
+	float boundary_X = 20; 
+	float boundary_Y = 7;
+	float boundary_Z = 20;
+
+	float movement_X = 0;
+	float movement_Y = 0;
+	float movement_Z = 0;
+
+	if (absoluteDistance_X > boundary_X)
+	{
+		if (distance_X >= 0)
+			movement_X = (distance_X - boundary_X);
+		else
+			movement_X = (distance_X + boundary_X);			
+	}
+		
+	if (absoluteDistance_Y > boundary_Y)
+	{
+		if (distance_Y >= 0)
+			movement_Y = (distance_Y - boundary_Y);
+		else
+			movement_Y = (distance_Y + boundary_Y);
+	}
+
+	if (absoluteDistance_Z > boundary_Z)
+	{
+		if (distance_Z >= 0)
+			movement_Z = (distance_Z - boundary_Z);
+		else
+			movement_Z = (distance_Z + boundary_Z);
+	}
+
+	App->camera->Move(vec3(movement_X, movement_Y, movement_Z));
+		return UPDATE_CONTINUE;
 }
 
 update_status ModuleSceneIntro::PostUpdate(float dt)

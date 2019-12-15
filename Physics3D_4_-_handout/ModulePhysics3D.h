@@ -11,6 +11,8 @@
 
 class DebugDrawer;
 class  PhysBody3D;
+struct PhysVehicle3D;
+struct VehicleInfo;
 
 class ModulePhysics3D : public Module
 {
@@ -27,6 +29,8 @@ public:
 
 	void AddBodyToWorld(btRigidBody* body);
 	void RemoveBodyFromWorld(btRigidBody* body);
+	PhysVehicle3D* AddVehicle(const VehicleInfo& info);
+
 
 	PhysBody3D* RayCast(const vec3& Origin, const vec3& Direction, vec3& HitPoint = vec3());
 
@@ -43,6 +47,7 @@ private:
 	btBroadphaseInterface*				broad_phase;
 	btSequentialImpulseConstraintSolver* solver;
 	btDiscreteDynamicsWorld*			world;
+	btDefaultVehicleRaycaster*			vehicle_raycaster;
 	DebugDrawer*						debug_draw;
 };
 

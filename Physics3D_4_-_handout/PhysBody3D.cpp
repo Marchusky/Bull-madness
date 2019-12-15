@@ -16,6 +16,16 @@ PhysBody3D::PhysBody3D()
 	
 }
 
+PhysBody3D::PhysBody3D(btRigidBody* body)
+	: body(body)
+	, colShape(nullptr)
+	, motionState(nullptr)
+	, parentPrimitive(nullptr)
+	, collision_listeners()
+{
+
+}
+
 // ---------------------------------------------------------
 PhysBody3D::~PhysBody3D()
 {
