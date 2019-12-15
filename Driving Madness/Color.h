@@ -23,10 +23,24 @@ struct Color
 	{
 		return (float*)this;
 	}
+
+	bool operator ==(const Color& v) const
+	{
+		return (r == v.r && g == v.g && b == v.b);
+	}
 };
 
-extern Color Red;
+extern Color Red; 
 extern Color Green;
 extern Color Blue;
 extern Color Black;
 extern Color White;
+extern Color Yellow;
+extern Color Pink;
+extern Color Purple;
+extern Color Orange;
+extern Color Cyan;
+extern Color LightBlue;
+extern Color Magenta;
+extern Color Grey;
+extern Color DarkGrey;

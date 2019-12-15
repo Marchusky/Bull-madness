@@ -19,10 +19,14 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
+	void RestartPlayer(vec3 respawnPosition);
+
 public:
 
 	PhysVehicle3D* vehicle;
 	float turn;
 	float acceleration;
 	float brake;
+	int	  Points;
+
 };

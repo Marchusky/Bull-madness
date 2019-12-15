@@ -12,7 +12,7 @@ struct PhysVehicle3D;
 class ModulePlayer : public Module
 {
 public:
-	ModulePlayer(bool start_enabled = true);
+	ModulePlayer(Application* app, bool start_enabled = true);
 	virtual ~ModulePlayer();
 
 	bool Start();

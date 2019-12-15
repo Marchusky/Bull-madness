@@ -23,22 +23,22 @@ PhysVehicle3D::~PhysVehicle3D()
 // ----------------------------------------------------------------------------
 void PhysVehicle3D::Render()
 {
-	Cylinder wheel;
+	Cylinder* wheel;
 
-	wheel.color = Blue;
-
-	for(int i = 0; i < vehicle->getNumWheels(); ++i)
+	for (int i = 0; i < vehicle->getNumWheels(); ++i)
 	{
-		wheel.radius = info.wheels[0].radius;
-		wheel.height = info.wheels[0].width;
+		wheel = new Cylinder(info.wheels[i].radius, info.wheels[i].width);
+		wheel->color = Blue;
 
 		vehicle->updateWheelTransform(i);
-		vehicle->getWheelInfo(i).m_worldTransform.getOpenGLMatrix(&wheel.transform);
+		vehicle->getWheelInfo(i).m_worldTransform.getOpenGLMatrix(&wheel->transform);
 
-		wheel.Render();
+		wheel->Render();
+		delete wheel;
+		wheel = nullptr;
 	}
 
-	Cube chassis(info.chassis_size.x, info.chassis_size.y, info.chassis_size.z);
+	chassis = Cube(vec3(info.chassis_size.x, info.chassis_size.y, info.chassis_size.z));
 	vehicle->getChassisWorldTransform().getOpenGLMatrix(&chassis.transform);
 	btQuaternion q = vehicle->getChassisWorldTransform().getRotation();
 	btVector3 offset(info.chassis_offset.x, info.chassis_offset.y, info.chassis_offset.z);
@@ -55,9 +55,9 @@ void PhysVehicle3D::Render()
 // ----------------------------------------------------------------------------
 void PhysVehicle3D::ApplyEngineForce(float force)
 {
-	for(int i = 0; i < vehicle->getNumWheels(); ++i)
+	for (int i = 0; i < vehicle->getNumWheels(); ++i)
 	{
-		if(info.wheels[i].drive == true)
+		if (info.wheels[i].drive == true)
 		{
 			vehicle->applyEngineForce(force, i);
 		}
@@ -67,9 +67,9 @@ void PhysVehicle3D::ApplyEngineForce(float force)
 // ----------------------------------------------------------------------------
 void PhysVehicle3D::Brake(float force)
 {
-	for(int i = 0; i < vehicle->getNumWheels(); ++i)
+	for (int i = 0; i < vehicle->getNumWheels(); ++i)
 	{
-		if(info.wheels[i].brake == true)
+		if (info.wheels[i].brake == true)
 		{
 			vehicle->setBrake(force, i);
 		}
@@ -79,9 +79,9 @@ void PhysVehicle3D::Brake(float force)
 // ----------------------------------------------------------------------------
 void PhysVehicle3D::Turn(float degrees)
 {
-	for(int i = 0; i < vehicle->getNumWheels(); ++i)
+	for (int i = 0; i < vehicle->getNumWheels(); ++i)
 	{
-		if(info.wheels[i].steering == true)
+		if (info.wheels[i].steering == true)
 		{
 			vehicle->setSteeringValue(degrees, i);
 		}

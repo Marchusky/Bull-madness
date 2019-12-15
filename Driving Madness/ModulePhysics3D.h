@@ -11,11 +11,13 @@
 
 class DebugDrawer;
 class PhysBody3D;
+struct PhysVehicle3D;
+struct VehicleInfo;
 
 class ModulePhysics3D : public Module
 {
 public:
-	ModulePhysics3D(bool start_enabled = true);
+	ModulePhysics3D(Application* app, bool start_enabled = true);
 	~ModulePhysics3D();
 
 	bool Init();
@@ -26,29 +28,45 @@ public:
 	bool CleanUp();
 
 	void AddBodyToWorld(btRigidBody* body);
+	void RemoveBodyFromWorld(btRigidBody* body);
 
-	void AddConstraintP2P(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB);
-	void AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB, const vec3& axisS, const vec3& axisB, bool disable_collision = false);
+	PhysBody3D* RayCast(const vec3& Origin, const vec3& Direction, vec3& HitPoint = vec3());
+
+	PhysBody3D* AddBody(const Sphere& sphere, float mass = 1.0f, bool is_sensor = false);				//REVISE THIS AddBody Methods. No virtual, just an override for different shapes.
+	PhysBody3D* AddBody(const Cube& cube, float mass = 1.0f);
+	PhysBody3D* AddBody(const Cylinder& cylinder, float mass = 1.0f);
+	PhysVehicle3D* AddVehicle(const VehicleInfo& info);
+
+	//A P2P constraint takes the center between the centers of the 2 bodies as the pivot. 
+	//Change btVector3s for vec3s? --> With this change the method does not depend on Bullet at argument level. It depends on glmath.h. REVISE THIS HERE --> Should it be changed?
+	//Change "Primitive&"s for PhysBodies ?
+	void AddConstraintP2P(const Primitive& bodyA, const Primitive& bodyB, const vec3& pivotInA, const vec3& pivotInB, bool can_collide = false);
+	void AddConstraintHinge(const Primitive& bodyA, const Primitive& bodyB, const vec3& pivotInA, const vec3& pivotInB, const vec3& axisInA, const vec3& axisInB, bool can_collide = false);
+
+	p2List<PhysVehicle3D*>					vehicles;
 
 private:
-	btDefaultCollisionConfiguration*	collision_conf;
-	btCollisionDispatcher*				dispatcher;
-	btBroadphaseInterface*				broad_phase;
-	btSequentialImpulseConstraintSolver* solver;
-	btDiscreteDynamicsWorld*			world;
+	bool debug;		//Bool for debug mode. Used to spawn bodies.
+	
+	btDefaultCollisionConfiguration*		collision_conf;
+	btCollisionDispatcher*					dispatcher;
+	btBroadphaseInterface*					broad_phase;
+	btSequentialImpulseConstraintSolver*	solver;
+	btDiscreteDynamicsWorld*				world;
+	btDefaultVehicleRaycaster*				vehicle_raycaster;
+	DebugDrawer*							debug_draw;
 
-	p2List<btCollisionShape*>			shapes;
-	p2List<PhysBody3D*>					bodies;
-	p2List<btDefaultMotionState*>		motions;
-	p2List<btTypedConstraint*>			constraints;
-
-	DebugDrawer*						debug_draw;
+	p2List<btCollisionShape*>				shapes;
+	p2List<PhysBody3D*>						bodies;
+	p2List<btDefaultMotionState*>			motions;
+	p2List<btTypedConstraint*>				constraints;
+	//p2List<PhysVehicle3D*>					vehicles;
 };
 
 class DebugDrawer : public btIDebugDraw
 {
 public:
-	DebugDrawer() : line(0,0,0)
+	DebugDrawer() : line()
 	{}
 
 	void drawLine(const btVector3& from, const btVector3& to, const btVector3& color);

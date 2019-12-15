@@ -2,6 +2,7 @@
 
 #include "PhysBody3D.h"
 #include "glmath.h"
+#include "Primitive.h"
 
 class btRaycastVehicle;
 struct PhysBody3D;
@@ -9,7 +10,7 @@ struct PhysBody3D;
 struct Wheel
 {
 	vec3 connection; // origin of the ray. Must come from within the chassis
-	vec3 direction; 
+	vec3 direction;
 	vec3 axis;
 	float suspensionRestLength; // max length for suspension in meters
 	float radius;
@@ -23,7 +24,7 @@ struct Wheel
 struct VehicleInfo
 {
 	~VehicleInfo();
-	
+
 	vec3 chassis_size;
 	vec3 chassis_offset;
 	float mass;
@@ -52,6 +53,7 @@ public:
 	float GetKmh() const;
 public:
 
+	Cube chassis;
 	VehicleInfo info;
 	btRaycastVehicle* vehicle;
 };
