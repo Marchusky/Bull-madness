@@ -145,7 +145,8 @@ update_status ModulePlayer::Update(float dt)
 	vehicle->Render();
 
 	char title[80];
-	sprintf_s(title, "You have: %d Points-------------------Highscore: %d Points", Points, HighScore);
+	int time = 60 - App->scene_intro->timer;
+	sprintf_s(title, "%d Time Left ------ you have: %d Points-------------------Highscore: %d Points",time, Points, HighScore);
 	App->window->SetTitle(title);
 
 	return UPDATE_CONTINUE;

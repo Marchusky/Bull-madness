@@ -20,6 +20,7 @@ public:
 	bool CleanUp();
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2) override;
+
 public:
 	Primitive* furniture;																			//Multiuse pointer that is used in the SetCube/Sphere/Cylinder methods.																		
 
@@ -42,11 +43,12 @@ public:
 	Cube* fivetwo;
 	Cube* sixtwo;
 
-private:
-	void HandleDebugInput();																		//Method that holds all the inputs that are activated when in debug mode.
-	void DebugSpawnPrimitive(Primitive* p);															//Spawns an element on the world. Used in debug mode.
+	//timer
+	float timer;
 
+private:
 	p2DynArray<Primitive*> primitives;																//Array containing all elements that are currently existing in the world.
 	p2DynArray<Primitive*> arena_elements;
 	p2DynArray<Primitive*> torque_elements;
+
 };
