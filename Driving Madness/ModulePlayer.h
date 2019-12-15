@@ -21,6 +21,10 @@ public:
 
 	void RestartPlayer(vec3 respawnPosition);
 
+	void OnCollision(PhysBody3D* body1, PhysBody3D* body2) override;
+
+
+
 public:
 
 	PhysVehicle3D* vehicle;
@@ -28,5 +32,8 @@ public:
 	float acceleration;
 	float brake;
 	int	  Points;
+	int HighScore;
+	PhysBody3D* prevCollBody[MAX_BODIES];
+
 
 };

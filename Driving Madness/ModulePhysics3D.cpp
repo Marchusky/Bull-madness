@@ -62,36 +62,6 @@ bool ModulePhysics3D::Start()
 	world->setGravity(GRAVITY);
 	vehicle_raycaster = new btDefaultVehicleRaycaster(world);								//Without this stepSimulation crashes. It sends an reading access error because m_dynamicsWorld cannot be read as it has not been allocated/set (is nullptr).
 
-	// Big rectangle as ground
-	{
-		btCollisionShape* colShape = new btBoxShape(btVector3(200.0f, 2.0f, 200.0f));
-
-		mat4x4 glMatrix = IdentityMatrix;
-		glMatrix.translate(0.f, -2.f, 0.f);
-		btTransform startTransform;
-		startTransform.setFromOpenGLMatrix(&glMatrix);
-
-		btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
-		btRigidBody::btRigidBodyConstructionInfo rbInfo(0.0f, myMotionState, colShape);
-
-		btRigidBody* body = new btRigidBody(rbInfo);
-		world->addRigidBody(body);
-
-		//// Big cylinder as ground
-		//btCollisionShape* colShape = new btCylinderShape(btVector3(100.0f, 2.0f, 100.0f));
-
-		//mat4x4 glMatrix = IdentityMatrix;
-		//glMatrix.translate(0.f, -2.f, 0.f);
-		//btTransform startTransform;
-		//startTransform.setFromOpenGLMatrix(&glMatrix);
-
-		//btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
-		//btRigidBody::btRigidBodyConstructionInfo rbInfo(0.0f, myMotionState, colShape);
-
-		//btRigidBody* body = new btRigidBody(rbInfo);
-		//world->addRigidBody(body);
-	}
-
 	return true;
 }
 

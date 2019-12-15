@@ -18,6 +18,7 @@ bool ModulePlayer::Start()
 {
 	LOG("Loading player");
 	Points = 0;
+	HighScore = 0;
 	VehicleInfo car;
 
 	// Car properties ----------------------------------------
@@ -144,7 +145,7 @@ update_status ModulePlayer::Update(float dt)
 	vehicle->Render();
 
 	char title[80];
-	sprintf_s(title, "%.1f Km/h", vehicle->GetKmh());
+	sprintf_s(title, "You have: %d Points-------------------Highscore: %d Points", Points, HighScore);
 	App->window->SetTitle(title);
 
 	return UPDATE_CONTINUE;
@@ -159,4 +160,54 @@ void ModulePlayer::RestartPlayer(vec3 respawnPosition)
 	vehicle->ResetTransform();													
 	vehicle->SetPos(respawnPosition.x, respawnPosition.y, respawnPosition.z);	
 
+}
+
+void ModulePlayer::OnCollision(PhysBody3D * body1, PhysBody3D * body2)
+{
+	Color color = Color((float)(std::rand() % 255) / 255.f, (float)(std::rand() % 255) / 255.f, (float)(std::rand() % 255) / 255.f);
+
+	if (body1->parentPrimitive != nullptr && body2->GetBody() == vehicle->GetBody())
+	{
+		body1->parentPrimitive->color = Blue;
+	}
+
+	if (body2->parentPrimitive != nullptr && body2->is_environment == false && body1->is_sensor == false)
+	{
+		body2->parentPrimitive->color = Red;
+	}
+
+
+	if (body2->GetBody() == vehicle->GetBody())
+	{
+		/*if (body1->is_sensor == true)
+		{
+			Points++;
+
+			return;
+		}*/
+
+		for (int i = 0; i < MAX_BODIES; i++)
+		{
+			if (prevCollBody[i] == body1)
+			{
+				break;
+			}
+
+			if (prevCollBody[i] == NULL /*&& body1->parentPrimitive->color == Blue*/)
+			{
+				Points++;
+				prevCollBody[i] = body1;
+
+				break;
+			}
+
+			if (prevCollBody[MAX_BODIES - 1] != NULL)
+			{
+				for (int i = 0; i < MAX_BODIES; i++)
+				{
+					prevCollBody[i] = NULL;
+				}
+			}
+		}
+	}
 }

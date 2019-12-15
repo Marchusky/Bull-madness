@@ -52,9 +52,7 @@ enum update_status
 #define BRAKE_POWER 1250.0f
 
 // Gameplay Variables
-#define MAX_BODIES 30
-#define MAX_LIVES 3
-#define MAX_AMMO 4
+#define MAX_BODIES 50
 
 class Application;
 

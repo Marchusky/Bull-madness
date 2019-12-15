@@ -21,13 +21,6 @@ public:
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2) override;
 public:
-	Cube* top_constrained_cube;																		//Pointer of the element constrained to the top column. Done so torque can be added in the update.
-	Cube* bottom_constrained_cube;
-	/*Cube* top_constrained_cube;
-	Cube* top_constrained_cube;
-	Cube* top_constrained_cube;
-	Cube* top_constrained_cube;*/
-
 	Primitive* furniture;																			//Multiuse pointer that is used in the SetCube/Sphere/Cylinder methods.																		
 
 	void AddPrimitive(Primitive* p);																//Adds a primitive to the primitives dynArray.
@@ -40,6 +33,14 @@ public:
 
 	void CheckWins();
 	void RestartGame();																				//Resets everyithing except Arena elements.
+
+	//Constrains
+	Cube* onetwo;
+	Cube* twotwo;
+	Cube* threetwo;
+	Cube* fourtwo;
+	Cube* fivetwo;
+	Cube* sixtwo;
 
 private:
 	void HandleDebugInput();																		//Method that holds all the inputs that are activated when in debug mode.
