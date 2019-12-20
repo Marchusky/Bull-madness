@@ -38,7 +38,8 @@ void PhysVehicle3D::Render()
 		wheel = nullptr;
 	}
 
-	chassis = Cube(vec3(info.chassis_size.x, info.chassis_size.y, info.chassis_size.z));
+	//Bull Body------------------------------------------------
+	chassis = Cube(vec3(info.chassis_size.x +0.5f, info.chassis_size.y, info.chassis_size.z + 0.3f));
 	vehicle->getChassisWorldTransform().getOpenGLMatrix(&chassis.transform);
 	btQuaternion q = vehicle->getChassisWorldTransform().getRotation();
 	btVector3 offset(info.chassis_offset.x, info.chassis_offset.y, info.chassis_offset.z);
@@ -50,7 +51,9 @@ void PhysVehicle3D::Render()
 
 	chassis.Render();
 	
-	Cube front(vec3(1, info.chassis_size.y, 2));
+
+	//Bull Head--------------------------------------------------------
+	Cube front(vec3(1, info.chassis_size.y - 0.5f, 2));
 	vehicle->getChassisWorldTransform().getOpenGLMatrix(&front.transform);
 	btVector3 front_offset(info.chassis_offset.x, info.chassis_offset.y + 0.3, info.chassis_offset.z +1.6);
 	front_offset = front_offset.rotate(q.getAxis(), q.getAngle());
@@ -61,7 +64,8 @@ void PhysVehicle3D::Render()
 
 	front.Render();
 
-	Cube horn(vec3(1, 0.4, 0.3));
+	//Bull left horn---------------------------------------------------------
+	Cube horn(vec3(1, 0.4f, 0.3f));
 	vehicle->getChassisWorldTransform().getOpenGLMatrix(&horn.transform);
 	btVector3 horn_offset(info.chassis_offset.x + 0.8, info.chassis_offset.y + 0.7, info.chassis_offset.z + 1.8);
 	horn_offset = horn_offset.rotate(q.getAxis(), q.getAngle());
@@ -72,6 +76,19 @@ void PhysVehicle3D::Render()
 
 	horn.Render();
 
+	//Bull left horn extension
+	Cube horn_Extension(vec3(0.3f, 0.4f, 1.0f));
+	vehicle->getChassisWorldTransform().getOpenGLMatrix(&horn_Extension.transform);
+	btVector3 horn_Extension_offset(info.chassis_offset.x + 1.15f, info.chassis_offset.y + 0.7f, info.chassis_offset.z + 2.3f);
+	horn_Extension_offset = horn_Extension_offset.rotate(q.getAxis(), q.getAngle());
+
+	horn_Extension.transform.M[12] += horn_Extension_offset.getX();
+	horn_Extension.transform.M[13] += horn_Extension_offset.getY();
+	horn_Extension.transform.M[14] += horn_Extension_offset.getZ();
+
+	horn_Extension.Render();
+
+	//Bull right horn------------------------------------------------------
 	Cube horn1(vec3(1, 0.4, 0.3));
 	vehicle->getChassisWorldTransform().getOpenGLMatrix(&horn1.transform);
 	btVector3 horn1_offset(info.chassis_offset.x - 0.8, info.chassis_offset.y + 0.7, info.chassis_offset.z + 1.8);
@@ -82,6 +99,44 @@ void PhysVehicle3D::Render()
 	horn1.transform.M[14] += horn1_offset.getZ();
 
 	horn1.Render();
+
+	//Bull right horn extension
+	Cube horn1_Extension(vec3(0.3f, 0.4f, 1.0f));
+	vehicle->getChassisWorldTransform().getOpenGLMatrix(&horn1_Extension.transform);
+	btVector3 horn1_Extension_offset(info.chassis_offset.x - 1.15f, info.chassis_offset.y + 0.7f, info.chassis_offset.z + 2.3f);
+	horn1_Extension_offset = horn1_Extension_offset.rotate(q.getAxis(), q.getAngle());
+
+	horn1_Extension.transform.M[12] += horn1_Extension_offset.getX();
+	horn1_Extension.transform.M[13] += horn1_Extension_offset.getY();
+	horn1_Extension.transform.M[14] += horn1_Extension_offset.getZ();
+
+	horn1_Extension.Render();
+
+	//Bull tail
+	Cube tail = Cube(vec3(0.25f, 0.25, 0.35));
+	vehicle->getChassisWorldTransform().getOpenGLMatrix(&tail.transform);
+	btVector3 tail_offset(info.chassis_offset.x, info.chassis_offset.y+0.5f, info.chassis_offset.z-1.8);
+	tail_offset = tail_offset.rotate(q.getAxis(), q.getAngle());
+
+	tail.transform.M[12] += tail_offset.getX();
+	tail.transform.M[13] += tail_offset.getY();
+	tail.transform.M[14] += tail_offset.getZ();
+
+	tail.Render();
+
+	//Bull tail extension
+	Cube tail_Extension = Cube(vec3(0.2f, 0.8f, 0.3f));
+	vehicle->getChassisWorldTransform().getOpenGLMatrix(&tail_Extension.transform);
+	btVector3 tail_Extension_offset(info.chassis_offset.x, info.chassis_offset.y+0.15f, info.chassis_offset.z - 2.f);
+	tail_Extension_offset = tail_Extension_offset.rotate(q.getAxis(), q.getAngle());
+
+	tail_Extension.transform.M[12] += tail_Extension_offset.getX();
+	tail_Extension.transform.M[13] += tail_Extension_offset.getY();
+	tail_Extension.transform.M[14] += tail_Extension_offset.getZ();
+
+	tail_Extension.Render();
+
+
 }
 
 // ----------------------------------------------------------------------------

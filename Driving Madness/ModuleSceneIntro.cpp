@@ -52,7 +52,7 @@ bool ModuleSceneIntro::CleanUp()
 update_status ModuleSceneIntro::Update(float dt)
 {
 	timer += dt;
-	if (timer >= 30.0f)
+	if (timer >= 60.0f)
 	{
 		timer = 0.0f;
 		RestartGame();
