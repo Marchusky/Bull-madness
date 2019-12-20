@@ -22,7 +22,7 @@ bool ModuleSceneIntro::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
-	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
+	App->camera->Move(vec3(1.0f, 10.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
 
 	LoadCircuit();
@@ -71,7 +71,7 @@ update_status ModuleSceneIntro::Update(float dt)
 
 	if (App->player->vehicle->chassis.transform.M[13] <= -3)
 	{
-		App->player->RestartPlayer(vec3(88, 6, 88));
+		App->player->RestartPlayer(vec3(88, 1, 88));
 	}
 
 	//IMPORTANTE
@@ -110,7 +110,7 @@ update_status ModuleSceneIntro::Update(float dt)
 
 	//CAMERA POSITION------------------------------------------------------------
 	float boundary_X = 20;
-	float boundary_Y = 7;
+	float boundary_Y = 15;
 	float boundary_Z = 20;
 
 	float movement_X = 0;
@@ -172,7 +172,7 @@ update_status ModuleSceneIntro::PostUpdate(float dt)
 	}
 	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
 	{
-		App->player->RestartPlayer(vec3(88, 6, 88));
+		App->player->RestartPlayer(vec3(88, 1, 88));
 	}
 
 	return UPDATE_CONTINUE;
@@ -389,6 +389,6 @@ void ModuleSceneIntro::RestartGame()
 	{
 		App->player->HighScore = App->player->Points;
 	}
-	App->player->RestartPlayer(vec3(88, 6, 88));
+	App->player->RestartPlayer(vec3(88, 1, 88));
 	App->player->Points = 0;
 }
