@@ -42,8 +42,8 @@ class Cube : public Primitive
 {
 public :
 	//Cube()
-	Cube(const vec3& size = vec3(1.f,1.f,1.f), float mass = 1.f, bool is_sensor = false, bool is_environment = false);
-	Cube(float sizeX, float sizeY, float sizeZ, bool is_sensor = false, bool is_environment = false);
+	Cube(const vec3& size = vec3(1.f,1.f,1.f), float mass = 1.f, bool sensor = false, bool enviroment_objects = false);
+	Cube(float sizeX, float sizeY, float sizeZ, bool sensor = false, bool enviroment_objects = false);
 	vec3 GetSize() const;
 	void SetSize(const vec3 newSize);
 protected:
@@ -56,7 +56,7 @@ private:
 class Sphere : public Primitive
 {
 public:
-	Sphere(float radius = 1.f, float mass = 1.f, bool is_sensor = false, bool is_environment = false);
+	Sphere(float radius = 1.f, float mass = 1.f, bool sensor = false, bool enviroment_objects = false);
 
 	float GetRadius() const;
 	void SetRadius(const float newRadius);					//REVISE THIS. Check both the setter function and the const float argument.
@@ -70,8 +70,8 @@ private:
 class Cylinder : public Primitive
 {
 public:
-	Cylinder(float radius = 1.f, float height = 2.f, float mass = 1.f,  bool is_sensor = false, bool is_environment = false);
-	Cylinder(bool is_sensor, bool is_environment = false, const vec3& size = vec3(1.f, 2.f, 1.f), float mass = 1.f);
+	Cylinder(float radius = 1.f, float height = 2.f, float mass = 1.f,  bool sensor = false, bool enviroment_objects = false);
+	Cylinder(bool sensor, bool enviroment_objects = false, const vec3& size = vec3(1.f, 2.f, 1.f), float mass = 1.f);
 
 	float GetRadius() const;
 	void SetRadius(float newRadius);					//REVISE THIS. Check both the setter function and the const float argument.

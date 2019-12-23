@@ -11,18 +11,16 @@ PhysBody3D::PhysBody3D()
 	, colShape(nullptr)
 	, motionState(nullptr)
 	, parentPrimitive(nullptr)
-	, is_sensor(false)
-	/*, collision_listeners()*/
+	, sensor(false)
 {
 
 }
 
-PhysBody3D::PhysBody3D(btRigidBody* body)		//REVISE THIS. Second PhysBody3D constructor. May be problematic(?).
+PhysBody3D::PhysBody3D(btRigidBody* body)
 	: body(body)
 	, colShape(nullptr)
 	, motionState(nullptr)
 	, parentPrimitive(nullptr)
-	/*, collision_listeners()*/
 {}
 
 // ---------------------------------------------------------
@@ -37,28 +35,26 @@ PhysBody3D::~PhysBody3D()
 	}
 }
 
-void PhysBody3D::SetBody(Sphere* primitive, float mass, bool is_sensor, bool is_environment)
+void PhysBody3D::SetBody(Sphere* primitive, float mass, bool sensor, bool enviroment_objects)
 {
 	SetBody(new btSphereShape(primitive->GetRadius()),
-		primitive, mass, is_sensor, is_environment);
+		primitive, mass, sensor, enviroment_objects);
 }
 
-void PhysBody3D::SetBody(Cube* primitive, vec3 size, float mass, bool is_sensor, bool is_environment)
+void PhysBody3D::SetBody(Cube* primitive, vec3 size, float mass, bool sensor, bool enviroment_objects)
 {
-	//btVector3 btSize = { primitive->GetSize().x, primitive->GetSize().y, primitive->GetSize().z };
 	btVector3 btSize = { size.x, size.y, size.z };
 
 	SetBody(new btBoxShape(btSize * HALF),
-		primitive, mass, is_sensor, is_environment);
+		primitive, mass, sensor, enviroment_objects);
 }
 
-void PhysBody3D::SetBody(Cylinder* primitive, float mass, bool is_sensor, bool is_environment)
+void PhysBody3D::SetBody(Cylinder* primitive, float mass, bool sensor, bool enviroment_objects)
 {
-	//btVector3 btSize = { primitive->GetRadius(), primitive->GetHeight() * 0.5f, depth };
 	btVector3 btSize = { primitive->GetHeight() * HALF, primitive->GetRadius(), 0.0f };
 	
 	SetBody(new btCylinderShapeX(btSize),
-		primitive, mass, is_sensor, is_environment);
+		primitive, mass, sensor, enviroment_objects);
 }
 
 bool PhysBody3D::HasBody() const
@@ -78,7 +74,6 @@ void PhysBody3D::GetTransform(float* matrix) const
 		return;
 
 	body->getWorldTransform().getOpenGLMatrix(matrix);
-	//body->activate();
 }
 
 // ---------------------------------------------------------
@@ -118,7 +113,6 @@ void PhysBody3D::SetPos(vec3 position)
 	body->activate();
 }
 
-// --- Gets the position of an object in the physics world.
 vec3 PhysBody3D::GetPos() const
 {
 	if (HasBody() == false)
@@ -132,7 +126,6 @@ vec3 PhysBody3D::GetPos() const
 	return position;
 }
 
-// --- Gets the distance between a physBody and the world origin (vec3(0.0f, 0.0f, 0.0f))
 float PhysBody3D::DistanceFromWorldOrigin(vec3 bodyPos) const
 {
 	vec3 origin(0.0f, 0.0f, 0.0f);
@@ -157,7 +150,6 @@ float PhysBody3D::DistanceFromWorldOrigin(vec3 bodyPos) const
 	}
 
 	float distance = posX + posY + posZ;
-	//float distance = posX + posZ;
 
 	return distance;
 }
@@ -190,13 +182,12 @@ float PhysBody3D::DistanceBetweenBodies(vec3 bodyPos) const
 	return distance;
 }
 
-// --- Sets a body as a Sensor, which means that it will detect a collision but it can be gone through (returns no contact)
-void PhysBody3D::SetAsSensor(bool is_sensor)
+void PhysBody3D::SetAsSensor(bool sensor)
 {
-	if (this->is_sensor != is_sensor)
+	if (this->sensor != sensor)
 	{
-		this->is_sensor = is_sensor;
-		if (is_sensor == true)
+		this->sensor = sensor;
+		if (sensor == true)
 		{
 			body->setCollisionFlags(body->getCollisionFlags() | btCollisionObject::CF_NO_CONTACT_RESPONSE);		//Add “CF_NO_CONTACT_RESPONSE”” to Current Flags
 		}
@@ -238,7 +229,7 @@ void PhysBody3D::Stop()
 		body->clearForces();
 }
 
-void PhysBody3D::SetBody(btCollisionShape * shape, Primitive* parent, float mass, bool is_sensor, bool is_environment)
+void PhysBody3D::SetBody(btCollisionShape * shape, Primitive* parent, float mass, bool sensor, bool enviroment_objects)
 {
 	assert(HasBody() == false);
 
@@ -260,14 +251,14 @@ void PhysBody3D::SetBody(btCollisionShape * shape, Primitive* parent, float mass
 
 	body->setUserPointer(this);
 
-	this->SetAsSensor(is_sensor);
+	this->SetAsSensor(sensor);
 
-	if (is_sensor == true)								//With this both players will detect a collision with the sensor.
+	if (sensor == true)								//With this both players will detect a collision with the sensor.
 	{
 		this->collision_listeners.add(App->player);
 	}
 
-	this->is_environment = is_environment;				//Way to keep track of elements in the physics world that are part of the arena.
+	this->enviroment_objects = enviroment_objects;				//Way to keep track of elements in the physics world that are part of the arena.
 
  	App->physics->AddBodyToWorld(body);
 }

@@ -19,6 +19,7 @@ bool ModulePlayer::Start()
 	LOG("Loading player");
 	Points = -1;
 	HighScore = 0;
+	round = 0;
 	VehicleInfo car;
 
 	// Car properties ----------------------------------------
@@ -98,7 +99,7 @@ bool ModulePlayer::Start()
 	car.wheels[3].steering = false;
 
 	vehicle = App->physics->AddVehicle(car);
-	vehicle->SetPos(88, 6, 88);	 //IMPORTANT: HERE WE CAN CHANGE THE CAR'S INITIAL POSITION
+	vehicle->SetPos(88, 3, 88);	 // Byll position at start of game
 
 	return true;
 }
@@ -149,8 +150,7 @@ update_status ModulePlayer::Update(float dt)
 
 	vehicle->Render();
 
-	char title[80];
-	int time = 60 - App->scene_intro->timer;
+	time = 60 - App->scene_intro->timer;
 	sprintf_s(title, "%d Time Left ------ you have: %d Points-------------------Highscore: %d Points",time, Points, HighScore);
 	App->window->SetTitle(title);
 
@@ -172,20 +172,17 @@ void ModulePlayer::OnCollision(PhysBody3D * body1, PhysBody3D * body2)
 {
 	Color color = Color((float)(std::rand() % 255) / 255.f, (float)(std::rand() % 255) / 255.f, (float)(std::rand() % 255) / 255.f);
 
-	if (body1->parentPrimitive != nullptr && body2->GetBody() == vehicle->GetBody())
+	/*if (body1->parentPrimitive != nullptr && body2->GetBody() == vehicle->GetBody())
 	{
-		body1->parentPrimitive->color = Blue;
-	}
+		body1->parentPrimitive->color = Black;
+		Points++;
+	}*/
 
-	if (body2->parentPrimitive != nullptr && body2->is_environment == false && body1->is_sensor == false)
-	{
-		body2->parentPrimitive->color = Red;
-	}
 
 
 	if (body2->GetBody() == vehicle->GetBody())
 	{
-		/*if (body1->is_sensor == true)
+		/*if (body1->sensor == true)
 		{
 			Points++;
 
@@ -194,24 +191,49 @@ void ModulePlayer::OnCollision(PhysBody3D * body1, PhysBody3D * body2)
 
 		for (int i = 0; i < MAX_BODIES; i++)
 		{
-			if (prevCollBody[i] == body1)
+			if (ObstacleHitted[i] == body1)
 			{
 				break;
 			}
 
-			if (prevCollBody[i] == NULL /*&& body1->parentPrimitive->color == Blue*/)
+			if (ObstacleHitted[i] == NULL)
 			{
 				Points++;
-				prevCollBody[i] = body1;
-
+				ObstacleHitted[i] = body1;
+				int i = 0;
+				body1->parentPrimitive->color = Black;
+				if(round == i)
+				{
+					body1->parentPrimitive->color = Black;
+				}
+				else if (round == i++)
+				{
+					body1->parentPrimitive->color = White;
+				}
+				else if (round == i++)
+				{
+					body1->parentPrimitive->color = Purple;
+				}
+				else if (round == i++)
+				{
+					body1->parentPrimitive->color = Pink;
+				}
+				else if (round == i++)
+				{
+					body1->parentPrimitive->color = Yellow;
+				}
+				else if (round == i++)
+				{
+					body1->parentPrimitive->color = Grey;
+				}
 				break;
 			}
 
-			if (prevCollBody[MAX_BODIES - 1] != NULL)
+			if (ObstacleHitted[MAX_BODIES - 1] != NULL)
 			{
 				for (int i = 0; i < MAX_BODIES; i++)
 				{
-					prevCollBody[i] = NULL;
+					ObstacleHitted[i] = NULL;
 				}
 			}
 		}

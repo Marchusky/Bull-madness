@@ -27,14 +27,16 @@ Racing game made with bullet3D for the Physics II class in UPC-CITM
 
 
 # Goal of the Game
-The player has to pass through the maximum number of columns in 60sec.
+The player has to change the colors of the maximum number of columns in 60sec.
 Let's see who keeps the highscore.
 
 
 
 # Game Mechanics
-The bull passes through the columns to win points, there's a time limit
-of 60sec so be carefull and use the turbo to get as many columns as possible.
+The bull passes through the columns to win points, each round the color changes
+to differenciate wich columns have been passd.
+There's a time limitof 60sec so be carefull and use the turbo to get as many columns 
+as possible.
 
 
 

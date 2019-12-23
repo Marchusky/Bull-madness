@@ -25,7 +25,7 @@ void Primitive::Update()
 
 	if (body.GetBody()->isActive() == false || body.DistanceFromWorldOrigin(body.GetPos()) >= 200)
 	{
-		if (body.is_sensor == false && body.is_environment == false)
+		if (body.sensor == false && body.enviroment_objects == false)
 		{
 			//App->physics->RemoveBodyFromWorld(body.GetBody());
 			App->scene_intro->DeletePrimitive(this);
@@ -125,13 +125,13 @@ void Primitive::Scale(float x, float y, float z)
 //	type = PrimitiveTypes::Primitive_Cube;
 //}
 
-Cube::Cube(const vec3& _size, float mass, bool is_sensor, bool is_environment) : Primitive(), size(_size)
+Cube::Cube(const vec3& _size, float mass, bool sensor, bool enviroment_objects) : Primitive(), size(_size)
 {
 	type = PrimitiveTypes::Primitive_Cube;
-	body.SetBody(this, _size, mass, is_sensor, is_environment);
+	body.SetBody(this, _size, mass, sensor, enviroment_objects);
 }
 
-Cube::Cube(float sizeX, float sizeY, float sizeZ, bool is_sensor, bool is_environment) : Primitive(), size(sizeX, sizeY, sizeZ)
+Cube::Cube(float sizeX, float sizeY, float sizeZ, bool sensor, bool enviroment_objects) : Primitive(), size(sizeX, sizeY, sizeZ)
 {
 	type = PrimitiveTypes::Primitive_Cube;
 }
@@ -195,10 +195,10 @@ void Cube::InnerRender() const
 
 // SPHERE ============================================
 
-Sphere::Sphere(float _radius, float mass, bool is_sensor, bool is_environment) : Primitive(), radius(_radius)
+Sphere::Sphere(float _radius, float mass, bool sensor, bool enviroment_objects) : Primitive(), radius(_radius)
 {
 	type = PrimitiveTypes::Primitive_Sphere;
-	body.SetBody(this, mass, is_sensor, is_environment);
+	body.SetBody(this, mass, sensor, enviroment_objects);
 }
 
 float Sphere::GetRadius() const
@@ -218,17 +218,17 @@ void Sphere::InnerRender() const
 
 
 // CYLINDER ============================================
-Cylinder::Cylinder(float radius, float height, float mass, bool is_sensor, bool is_environment) : Primitive(), radius(radius), height(height)
+Cylinder::Cylinder(float radius, float height, float mass, bool sensor, bool enviroment_objects) : Primitive(), radius(radius), height(height)
 {
 	type = PrimitiveTypes::Primitive_Cylinder;
-	body.SetBody(this, mass, is_sensor, is_environment);			//Change later, depth represents the z of the btVector3 that btCylinder shape requires.
+	body.SetBody(this, mass, sensor, enviroment_objects);			//Change later, depth represents the z of the btVector3 that btCylinder shape requires.
 	//App->physics->AddBody(this, mass);
 }
 
-Cylinder::Cylinder(bool is_sensor, bool is_environment, const vec3& size, float mass) : Primitive(), radius(size.x), height(size.y)
+Cylinder::Cylinder(bool sensor, bool enviroment_objects, const vec3& size, float mass) : Primitive(), radius(size.x), height(size.y)
 {
 	type = PrimitiveTypes::Primitive_Cylinder;
-	body.SetBody(this, mass, is_sensor, is_environment);
+	body.SetBody(this, mass, sensor, enviroment_objects);
 }
 
 float Cylinder::GetRadius() const

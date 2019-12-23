@@ -31,7 +31,12 @@ public:
 	float brake;
 	int	  Points;
 	int HighScore;
-	PhysBody3D* prevCollBody[MAX_BODIES];
+	int round;
+
+	int time;
+	char title[80];
+	PhysBody3D* ObstacleHitted[MAX_BODIES];
+
 
 
 };

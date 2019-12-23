@@ -22,15 +22,15 @@ public:
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2) override;
 
 public:
-	Primitive* furniture;																			//Multiuse pointer that is used in the SetCube/Sphere/Cylinder methods.																		
+	Primitive* furniture;																	
 
-	void AddPrimitive(Primitive* p);																//Adds a primitive to the primitives dynArray.
-	void DeletePrimitive(Primitive* p);																//Deletes a primitive from the primitives dynArray.
+	void AddPrimitive(Primitive* p);
+	void DeletePrimitive(Primitive* p);
 
 	void LoadCircuit();																				
-	void SetCube(const vec3& position, const vec3& size, float mass, float angle, const vec3& axis, bool is_sensor = false, bool is_environment = false);				//Creates and sets a cube on the world. Used to set Arena elements.
-	void SetSphere(const vec3& position, float radius, float mass, bool is_sensor = false, bool is_environment = false);												//Creates and sets a sphere on the world. Used to set Arena elements.
-	void SetCylinder(const vec3& position, float radius, float height, float mass, float angle, const vec3& axis, bool is_sensor = false, bool is_environment = false);	//Creates and sets a sphere on the world. Used to set Arena elements.
+	void SetCube(const vec3& position, const vec3& size, float mass, float angle, const vec3& axis, bool sensor = false, bool enviroment_objects = false);
+	void SetSphere(const vec3& position, float radius, float mass, bool sensor = false, bool enviroment_objects = false);
+	void SetCylinder(const vec3& position, float radius, float height, float mass, float angle, const vec3& axis, bool sensor = false, bool enviroment_objects = false);
 
 	void RestartGame();																				
 
@@ -46,7 +46,7 @@ public:
 	float timer;
 
 private:
-	p2DynArray<Primitive*> primitives;																//Array containing all elements that are currently existing in the world.
+	p2DynArray<Primitive*> primitives;
 	p2DynArray<Primitive*> arena_elements;
 	p2DynArray<Primitive*> torque_elements;
 

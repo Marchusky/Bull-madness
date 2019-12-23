@@ -8,10 +8,7 @@
 #include "ModuleRenderer3D.h"
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
-//, top_constrained_cube(nullptr)
-{
-	//app->renderer3D->skyBoxColor = vec3(1.f, 1.f, 1.f);		//Setting the skybox's color from ModuleSceneIntro. Color white.
-}
+{}
 
 ModuleSceneIntro::~ModuleSceneIntro()
 {}
@@ -154,9 +151,7 @@ update_status ModuleSceneIntro::Update(float dt)
 	fivetwo->body.GetBody()->applyTorque(btVector3(0.0f, 30000.0f, 0.0f));
 	sixtwo->body.GetBody()->applyTorque(btVector3(0.0f, 30000.0f, 0.0f));
 
-	/*for (uint n = 0; n < arena_elements.Count(); n++)
-		arena_elements[n]->Update();*/
-
+	
 	return UPDATE_CONTINUE;
 }
 
@@ -193,7 +188,7 @@ void ModuleSceneIntro::OnCollision(PhysBody3D * body1, PhysBody3D * body2)
 	}
 }
 
-// --- Adds a primitive to the primitives dynArray.
+
 void ModuleSceneIntro::AddPrimitive(Primitive * p)
 {
 	primitives.PushBack(p);
@@ -201,11 +196,11 @@ void ModuleSceneIntro::AddPrimitive(Primitive * p)
 
 void ModuleSceneIntro::DeletePrimitive(Primitive* p)
 {
-	for (int i = 0; i < primitives.Count(); i++)									//Revise this.
+	for (int i = 0; i < primitives.Count(); i++)
 	{
 		if (primitives[i] == p)
 		{
-			if (primitives[i]->body.is_sensor == false && primitives[i]->body.is_environment == false)
+			if (primitives[i]->body.sensor == false && primitives[i]->body.enviroment_objects == false)
 			{
 				App->physics->RemoveBodyFromWorld(primitives[i]->body.GetBody());
 				delete primitives[i];
@@ -220,13 +215,12 @@ void ModuleSceneIntro::DeletePrimitive(Primitive* p)
 void ModuleSceneIntro::LoadCircuit()
 {
 	// Ground
-	/*SetCube(vec3(88.0f, -2.0f, 88.0f), vec3(200.f, 5.f, 200.f), 0.0f, 0, vec3(1, 0, 0), false, true);*/
 	Cube* Ground = new Cube(vec3(200.f, 5.f, 200.f), 0.0f, false, true);
 	Ground->SetPos(88.0f, -2.0f, 88.0f);
 	primitives.PushBack(Ground);
 	Ground->color = Yellow;
 
-	// Circuit
+	// Arena
 	// 1
 	SetCylinder(vec3(60.0f, 0.0f, 16.0f), 0.5f, 10.0f, 0.0f, 90, vec3(0, 0, 1), true, true);
 	SetCylinder(vec3(40.0f, 0.0f, 16.0f), 0.5f, 10.0f, 0.0f, 90, vec3(0, 0, 1), true, true);
@@ -350,37 +344,36 @@ void ModuleSceneIntro::LoadCircuit()
 
 }
 
-void ModuleSceneIntro::SetCube(const vec3& position, const vec3& size, float mass, float angle, const vec3& axis, bool is_sensor, bool is_environment)
+void ModuleSceneIntro::SetCube(const vec3& position, const vec3& size, float mass, float angle, const vec3& axis, bool sensor, bool enviroment_objects)
 {
-	furniture = new Cube(size, mass, is_sensor, is_environment);						//Creates a cube primitive (and its body at Cube's class constructor).
-	furniture->SetPos(position.x, position.y, position.z);								//Sets the position of the element in the world.
-	primitives.PushBack(furniture);														//Adds the new element to the primitives array.
+	furniture = new Cube(size, mass, sensor, enviroment_objects);
+	furniture->SetPos(position.x, position.y, position.z);
+	primitives.PushBack(furniture);
 
-	furniture->SetRotation(angle, axis);												//Sets the amount of rotation that the element will have.
+	furniture->SetRotation(angle, axis);
 
 	Color color = Color((float)(std::rand() % 255) / 255.f, (float)(std::rand() % 255) / 255.f, (float)(std::rand() % 255) / 255.f);
-	furniture->color = color;															//Sets the element's colour.
+	furniture->color = color;
 }
 
-void ModuleSceneIntro::SetSphere(const vec3& position, float radius, float mass, bool is_sensor, bool is_environment)
+void ModuleSceneIntro::SetSphere(const vec3& position, float radius, float mass, bool sensor, bool enviroment_objects)
 {
-	furniture = new Sphere(radius, mass, is_sensor, is_environment);					//Creates a sphere primitive (and its body at Sphere's class constructor).
-	furniture->SetPos(position.x, position.y, position.z);								//Sets the position of the element in the world.
-	primitives.PushBack(furniture);														//Adds the new element to the primitives array.
+	furniture = new Sphere(radius, mass, sensor, enviroment_objects);
+	furniture->SetPos(position.x, position.y, position.z);
+	primitives.PushBack(furniture);
 
-	furniture->color = White;															//Sets the element's colour.
+	furniture->color = White;
 }
 
-void ModuleSceneIntro::SetCylinder(const vec3& position, float radius, float height, float mass, float angle, const vec3& axis, bool is_sensor, bool is_environment)
+void ModuleSceneIntro::SetCylinder(const vec3& position, float radius, float height, float mass, float angle, const vec3& axis, bool sensor, bool enviroment_objects)
 {
-	furniture = new Cylinder(radius, height, mass, is_sensor, is_environment);			//Creates a cylinder primitive (and its body at Cylinder's class constructor).
-	furniture->SetPos(position.x, position.y, position.z);								//Sets the position of the element in the world.
-	primitives.PushBack(furniture);														//Adds the new element to the primitives array.
+	furniture = new Cylinder(radius, height, mass, sensor, enviroment_objects);
+	furniture->SetPos(position.x, position.y, position.z);
+	primitives.PushBack(furniture);
 
-	furniture->SetRotation(angle, axis);												//Sets the amount of rotation that the element will have.
+	furniture->SetRotation(angle, axis);
 
-	Color color = Color((float)(std::rand() % 255) / 255.f, (float)(std::rand() % 255) / 255.f, (float)(std::rand() % 255) / 255.f);
-	furniture->color = color;															//Sets the element's colour.
+	furniture->color = Red;
 }
 
 void ModuleSceneIntro::RestartGame()
@@ -391,4 +384,21 @@ void ModuleSceneIntro::RestartGame()
 	}
 	App->player->RestartPlayer(vec3(88, 1, 88));
 	App->player->Points = 0;
+	// Time resetting
+	App->player->time = 60;
+	timer = 0;
+	// Object giving points resetting
+	for (int i = 0; i < MAX_BODIES; i++)
+	{
+		App->player->ObstacleHitted[i] = NULL;
+	}
+	// Object color change every round
+	if (App->player->round != 5)
+	{
+		App->player->round++;
+	}
+	else
+	{
+		App->player->round = 0;
+	}
 }

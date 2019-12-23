@@ -24,12 +24,12 @@ public:
 	PhysBody3D(btRigidBody* body);
 	~PhysBody3D();
 
-	void SetBody(Sphere* primitive, float mass, bool is_sensor = false, bool is_environment = false);
-	void SetBody(Cube* primitive, vec3 size, float mass, bool is_sensor = false, bool is_environment = false);
-	void SetBody(Cylinder* primitive, float mass, bool is_sensor = false, bool is_environment = false);
+	void SetBody(Sphere* primitive, float mass, bool sensor = false, bool enviroment_objects = false);
+	void SetBody(Cube* primitive, vec3 size, float mass, bool sensor = false, bool enviroment_objects = false);
+	void SetBody(Cylinder* primitive, float mass, bool sensor = false, bool enviroment_objects = false);
 	bool HasBody() const;
 	btRigidBody* GetBody() const;
-	void SetAsSensor(bool is_sensor);
+	void SetAsSensor(bool sensor);
 
 	void GetTransform(float* matrix) const;
 	void SetTransform(const float* matrix) const;
@@ -47,7 +47,7 @@ public:
 	float DistanceBetweenBodies(vec3 bodyPos) const;
 
 private:
-	void SetBody(btCollisionShape* shape, Primitive* parent, float mass, bool is_sensor = false, bool is_environment = false);
+	void SetBody(btCollisionShape* shape, Primitive* parent, float mass, bool sensor = false, bool enviroment_objects = false);
 
 	btRigidBody* body;
 	btCollisionShape* colShape;
@@ -57,8 +57,8 @@ public:
 	Primitive* parentPrimitive;
 	p2List<Module*> collision_listeners;
 
-	bool is_sensor;										//Bool that keeps track whether a physBody is a sensor or not.
-	bool is_environment;								//Bool that keeps track whether a physBody is an environment element.
+	bool sensor;
+	bool enviroment_objects;
 };
 
 #endif // __PhysBody3D_H__
